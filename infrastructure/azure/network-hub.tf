@@ -31,3 +31,12 @@ resource "azurerm_virtual_network_peering" "hub_to_spoke" {
   resource_group_name          = azurerm_resource_group.net.name
   virtual_network_name         = azurerm_virtual_network.hub.name
 }
+
+# A block of IPs for the hub
+resource "azurerm_public_ip_prefix" "hub" {
+  location            = azurerm_resource_group.net.location
+  name                = "pib-${local.project}-hub"
+  prefix_length       = 31
+  resource_group_name = azurerm_resource_group.net.name
+  tags                = local.tags
+}

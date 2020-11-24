@@ -1,5 +1,6 @@
 locals {
   aks_cluster_name     = "${local.project}-cluster"
+  firewall_name        = "fw-${local.project}"
   location             = "centralus"
   project              = "private-aks"
   subnet_name_agents   = "aks-agents-subnet"

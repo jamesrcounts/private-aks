@@ -4,7 +4,7 @@ resource "azurerm_virtual_network" "spoke" {
   location            = azurerm_resource_group.net.location
   name                = local.vnet_name_spoke
   resource_group_name = azurerm_resource_group.net.name
-  tags = local.tags
+  tags                = local.tags
 }
 
 # az network vnet subnet create -g $VNET_GROUP --vnet-name $KUBE_VNET_NAME -n $KUBE_ING_SUBNET_NAME --address-prefix 10.0.4.0/24
