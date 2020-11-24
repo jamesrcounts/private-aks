@@ -15,8 +15,8 @@ terraform {
       version = "~> 3.0.0"
     }
   }
-  
-    backend "remote" {
+
+  backend "remote" {
     organization = "jamesrcounts"
 
     workspaces {
