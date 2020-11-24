@@ -20,5 +20,6 @@
     * [x] spoke 
       * [x] ingress
       * [x] aks agents
+        * [x] route table and route to firewall
     * [x] peering between each
 * [ ] UDR egress
