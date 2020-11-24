@@ -1,5 +1,5 @@
 locals {
-  aks_cluster_name = local.project
+  aks_cluster_name = "${local.project}-cluster"
   project          = "private-aks"
 
   tags = {

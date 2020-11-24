@@ -8,7 +8,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   sku_tier                        = "Free"
   api_server_authorized_ip_ranges = []
   enable_pod_security_policy      = false
-  private_cluster_enabled         = false
+  private_cluster_enabled         = true
   # private_link_enabled            = false
 
   addon_profile {
