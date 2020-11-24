@@ -10,4 +10,13 @@
 
 ### Advanced
 * [ ] Bring your own network
+  * [x] Resource group for network
+  * [x] Pair of virtual networks
+    * [x] hub
+      * [x] AzureFirewallSubnet
+      * [x] jumpbox
+    * [x] spoke 
+      * [x] ingress
+      * [x] aks agents
+    * [x] peering between each
 * [ ] UDR egress
