@@ -50,6 +50,17 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   identity { type = "SystemAssigned" }
 
+  network_profile {
+    dns_service_ip     = "10.2.0.10"
+    docker_bridge_cidr = "172.17.0.1/16"
+    load_balancer_sku  = "Standard"
+    network_plugin     = "azure"
+    service_cidr       = "10.2.0.0/24"
+  }
+
+  # --vnet-subnet-id <subnet-id> \
+
+
   role_based_access_control {
     enabled = true
     azure_active_directory {
@@ -86,6 +97,5 @@ data "azurerm_kubernetes_service_versions" "current" {
 
 # TODO
 # disk_encryption_set_id 
-# private_cluster_enabled 
 # network_profile
 # https://docs.microsoft.com/en-us/azure/security-center/security-center-pricing
