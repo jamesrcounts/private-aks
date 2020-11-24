@@ -14,7 +14,7 @@
   * [x] Pair of virtual networks
     * [x] hub
       * [x] AzureFirewallSubnet
-        * [x] Azure Firewall
+        * [x] Azure Firewall with rules required by AKS
       * [x] jumpbox
       * [x] Public IP block
     * [x] spoke 
