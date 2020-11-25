@@ -17,10 +17,11 @@ resource "azurerm_subnet" "ingress" {
 
 # az network vnet subnet create -g $VNET_GROUP --vnet-name $KUBE_VNET_NAME -n $KUBE_AGENT_SUBNET_NAME --address-prefix 10.0.5.0/24
 resource "azurerm_subnet" "agents" {
-  address_prefixes     = ["10.0.5.0/24"]
-  name                 = local.subnet_name_agents
-  resource_group_name  = azurerm_resource_group.net.name
-  virtual_network_name = azurerm_virtual_network.spoke.name
+  address_prefixes                               = ["10.0.5.0/24"]
+  enforce_private_link_endpoint_network_policies = true
+  name                                           = local.subnet_name_agents
+  resource_group_name                            = azurerm_resource_group.net.name
+  virtual_network_name                           = azurerm_virtual_network.spoke.name
 }
 
 # az network vnet peering create -g $VNET_GROUP -n Spoke1ToHub --vnet-name $KUBE_VNET_NAME --remote-vnet $HUB_VNET_NAME --allow-vnet-access
@@ -57,4 +58,9 @@ resource "azurerm_subnet_route_table_association" "aks" {
   route_table_id = azurerm_route_table.aks.id
 }
 
-# az network route-table route list --resource-group $VNET_GROUP --route-table-name $DEPLOYMENT_NAME
+resource "azurerm_private_dns_zone_virtual_network_link" "private_link_to_spoke" {
+  name                  = "spoke"
+  resource_group_name   = azurerm_resource_group.net.name
+  private_dns_zone_name = azurerm_private_dns_zone.private_link.name
+  virtual_network_id    = azurerm_virtual_network.spoke.id
+}

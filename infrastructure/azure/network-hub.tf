@@ -40,3 +40,10 @@ resource "azurerm_public_ip_prefix" "hub" {
   resource_group_name = azurerm_resource_group.net.name
   tags                = local.tags
 }
+
+resource "azurerm_private_dns_zone_virtual_network_link" "private_link_to_hub" {
+  name                  = "hub"
+  resource_group_name   = azurerm_resource_group.net.name
+  private_dns_zone_name = azurerm_private_dns_zone.private_link.name
+  virtual_network_id    = azurerm_virtual_network.hub.id
+}

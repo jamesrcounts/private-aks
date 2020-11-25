@@ -22,4 +22,5 @@
       * [x] aks agents
         * [x] route table and route to firewall
     * [x] peering between each
+    * [ ] Private DNS Zone association to the hub
 * [x] UDR egress
