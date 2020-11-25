@@ -4,13 +4,13 @@
 # --load-balancer-sku standard \
 # --vm-set-type VirtualMachineScaleSets \
 # --enable-private-cluster \
-# --network-plugin azure \
+# --network-plugin kubenet \
 # --vnet-subnet-id $KUBE_AGENT_SUBNET_ID \
 # --docker-bridge-address 172.17.0.1/16 \
 # --dns-service-ip 10.2.0.10 \
 # --service-cidr 10.2.0.0/24 \
-# --enable-managed-identity \
-# --assign-identity $MSI_RESOURCE_ID \
+# --service-principal $SERVICE_PRINCIPAL_ID \
+# --client-secret $SERVICE_PRINCIPAL_SECRET \
 # --kubernetes-version $KUBE_VERSION \
 # --outbound-type userDefinedRouting
 resource "azurerm_kubernetes_cluster" "aks" {
@@ -63,13 +63,16 @@ resource "azurerm_kubernetes_cluster" "aks" {
     vnet_subnet_id        = local.subnet_id_agents
   }
 
-  identity { type = "SystemAssigned" }
+  service_principal {
+    client_id     = azuread_service_principal.aks_principal.application_id
+    client_secret = random_password.password.result
+  }
 
   network_profile {
     dns_service_ip     = "10.2.0.10"
     docker_bridge_cidr = "172.17.0.1/16"
     load_balancer_sku  = "Standard"
-    network_plugin     = "azure"
+    network_plugin     = "kubenet"
     outbound_type      = "userDefinedRouting"
     service_cidr       = "10.2.0.0/24"
   }
