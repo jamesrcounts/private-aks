@@ -1,3 +1,18 @@
+# az aks create \
+# --resource-group $KUBE_GROUP \
+# --name $KUBE_NAME \
+# --load-balancer-sku standard \
+# --vm-set-type VirtualMachineScaleSets \
+# --enable-private-cluster \
+# --network-plugin azure \
+# --vnet-subnet-id $KUBE_AGENT_SUBNET_ID \
+# --docker-bridge-address 172.17.0.1/16 \
+# --dns-service-ip 10.2.0.10 \
+# --service-cidr 10.2.0.0/24 \
+# --enable-managed-identity \
+# --assign-identity $MSI_RESOURCE_ID \
+# --kubernetes-version $KUBE_VERSION \
+# --outbound-type userDefinedRouting
 resource "azurerm_kubernetes_cluster" "aks" {
   name                            = local.aks_cluster_name
   location                        = azurerm_resource_group.main.location
@@ -9,7 +24,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
   api_server_authorized_ip_ranges = []
   enable_pod_security_policy      = false
   private_cluster_enabled         = true
-  # private_link_enabled            = false
 
   addon_profile {
     aci_connector_linux { enabled = false }
@@ -35,17 +49,18 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   default_node_pool {
+    availability_zones    = [1, 2, 3]
+    enable_auto_scaling   = true
+    enable_node_public_ip = false
+    max_count             = 3
     max_pods              = 100
+    min_count             = 1
     name                  = "system"
     orchestrator_version  = data.azurerm_kubernetes_service_versions.current.latest_version
     os_disk_size_gb       = 1024
     type                  = "VirtualMachineScaleSets"
     vm_size               = "Standard_DS2_v2"
-    availability_zones    = [1, 2, 3]
-    enable_auto_scaling   = true
-    enable_node_public_ip = false
-    max_count             = 3
-    min_count             = 1
+    vnet_subnet_id        = local.subnet_id_agents
   }
 
   identity { type = "SystemAssigned" }
@@ -55,11 +70,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
     docker_bridge_cidr = "172.17.0.1/16"
     load_balancer_sku  = "Standard"
     network_plugin     = "azure"
+    outbound_type      = "userDefinedRouting"
     service_cidr       = "10.2.0.0/24"
   }
-
-  # --vnet-subnet-id <subnet-id> \
-
 
   role_based_access_control {
     enabled = true
@@ -73,22 +86,22 @@ resource "azurerm_kubernetes_cluster" "aks" {
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "user" {
-  name                  = "user"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
-  vm_size               = "Standard_DS2_v2"
-  node_count            = 1
   availability_zones    = [1, 2, 3]
   enable_auto_scaling   = true
   enable_node_public_ip = false
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+  max_count             = 3
   max_pods              = 100
+  min_count             = 1
   mode                  = "User"
+  name                  = "user"
   orchestrator_version  = data.azurerm_kubernetes_service_versions.current.latest_version
   os_disk_size_gb       = 1024
   os_type               = "Linux"
   priority              = "Regular"
-  max_count             = 3
-  min_count             = 1
   tags                  = local.tags
+  vm_size               = "Standard_DS2_v2"
+  vnet_subnet_id        = local.subnet_id_agents
 }
 
 data "azurerm_kubernetes_service_versions" "current" {
@@ -97,5 +110,4 @@ data "azurerm_kubernetes_service_versions" "current" {
 
 # TODO
 # disk_encryption_set_id 
-# network_profile
 # https://docs.microsoft.com/en-us/azure/security-center/security-center-pricing

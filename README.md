@@ -22,4 +22,4 @@
       * [x] aks agents
         * [x] route table and route to firewall
     * [x] peering between each
-* [ ] UDR egress
+* [x] UDR egress

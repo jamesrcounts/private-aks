@@ -4,6 +4,7 @@ locals {
   location             = "centralus"
   project              = "private-aks"
   subnet_name_agents   = "aks-agents-subnet"
+  subnet_id_agents     = azurerm_subnet.agents.id
   subnet_name_firewall = "AzureFirewallSubnet"
   subnet_name_ingress  = "ingress-subnet"
   subnet_name_jump     = "jumpbox-subnet"
