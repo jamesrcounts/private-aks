@@ -36,22 +36,23 @@ RUN if [ "${INSTALL_AZURE_CLI}" = "true" ]; then bash /tmp/library-scripts/azcli
     fi \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Go tools
-ENV GO111MODULE=auto
-COPY library-scripts/go-debian.sh /tmp/library-scripts/
-RUN bash /tmp/library-scripts/go-debian.sh "none" "/usr/local/go" "${GOPATH}" "${USERNAME}" "false" \
-    && apt-get clean -y && rm -rf /tmp/library-scripts
 
 # Install Terraform, tflint
 ARG TERRAFORM_VERSION=0.12.16
 ARG TFLINT_VERSION=0.8.2
-RUN bash /tmp/library-scripts/terraform-debian.sh "${TERRAFORM_VERSION}" "${TFLINT_VERSION}" \
-    && rm -rf /tmp/library-scripts
-
-
-ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
-CMD [ "sleep", "infinity" ]
+RUN bash /tmp/library-scripts/terraform-debian.sh "${TERRAFORM_VERSION}" "${TFLINT_VERSION}"
 
 # [Optional] Uncomment this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends build-essential
+
+# Install Go tools
+ENV GO111MODULE=auto
+COPY library-scripts/go-debian.sh /tmp/library-scripts/
+RUN bash /tmp/library-scripts/go-debian.sh "latest" "/usr/local/go" "${GOPATH}" "${USERNAME}" "false" \
+    && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+
+RUN rm -rf /tmp/library-scripts
+
+ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
+CMD [ "sleep", "infinity" ]

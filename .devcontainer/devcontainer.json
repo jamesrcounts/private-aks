@@ -3,6 +3,8 @@
 	"build": {
 		"dockerfile": "Dockerfile",
 		"args": { 
+			// Update the VARIANT arg to pick a version of Go: 1, 1.15, 1.14
+			"VARIANT": "1",	
 			"TERRAFORM_VERSION": "0.13.5",
 			"TFLINT_VERSION": "0.18.0",
 			"INSTALL_AZURE_CLI": "true",
@@ -10,11 +12,17 @@
 			"INSTALL_NODE": "false"
 		}
 	},
+	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
 	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind" ],
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 
-		"terminal.integrated.shell.linux": "/bin/bash"
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"go.useGoProxyToCheckForToolUpdates": false,
+		"go.useLanguageServer": true,
+		"go.gopath": "/go",
+		"go.goroot": "/usr/local/go",
+		"go.toolsGopath": "/go/bin"
 	},
 
 	// Add the IDs of extensions you want installed when the container is created.
@@ -24,7 +32,8 @@
 		"ms-azuretools.vscode-azureterraform",
 		"ms-azuretools.vscode-docker",
 		"ms-vscode.azurecli",
-		"tyriar.sort-lines"
+		"tyriar.sort-lines",
+		"golang.Go"
 	]
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

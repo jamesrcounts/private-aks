@@ -8,14 +8,14 @@
 #
 # Syntax: ./go-debian.sh [Go version] [GOROOT] [GOPATH] [non-root user] [Add GOPATH, GOROOT to rc files flag] [Install tools flag]
 
+set -euo pipefail
+
 TARGET_GO_VERSION=${1:-"latest"}
 TARGET_GOROOT=${2:-"/usr/local/go"}
 TARGET_GOPATH=${3:-"/go"}
 USERNAME=${4:-"automatic"}
 UPDATE_RC=${5:-"true"}
 INSTALL_GO_TOOLS=${6:-"true"}
-
-set -e
 
 if [ "$(id -u)" -ne 0 ]; then
     echo -e 'Script must be run as root. Use sudo, su, or add "USER root" to your Dockerfile before running this script.'
