@@ -1,4 +1,4 @@
-module github.com/notchairmk/terraform-plugin-loafsley
+module github.com/jamesrcounts/private-aks/providers/azurerm-private-dns-data/azprivatedns
 
 go 1.13
 

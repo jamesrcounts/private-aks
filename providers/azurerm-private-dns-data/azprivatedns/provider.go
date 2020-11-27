@@ -1,4 +1,4 @@
-package loafsley
+package azprivatedns
 
 import (
 	"fmt"
