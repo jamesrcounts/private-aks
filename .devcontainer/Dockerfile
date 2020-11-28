@@ -1,7 +1,7 @@
 # You can pick any Debian/Ubuntu-based image. 😊
 FROM mcr.microsoft.com/vscode/devcontainers/base:buster
 
-COPY library-scripts/*.sh /tmp/library-scripts/
+# COPY library-scripts/*.sh /tmp/library-scripts/
 
 # [Option] Install zsh
 ARG INSTALL_ZSH="true"
@@ -12,6 +12,7 @@ ARG UPGRADE_PACKAGES="false"
 ARG USERNAME=vscode
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
+COPY library-scripts/common-debian.sh /tmp/library-scripts/
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" \ 
     && apt-get install -y graphviz \
@@ -27,6 +28,9 @@ ARG NODE_VERSION="lts/*"
 ENV NVM_DIR=/usr/local/share/nvm
 ENV NVM_SYMLINK_CURRENT=true \
     PATH=${NVM_DIR}/current/bin:${PATH}
+COPY library-scripts/azcli-debian.sh /tmp/library-scripts/
+COPY library-scripts/node-debian.sh /tmp/library-scripts/
+COPY library-scripts/docker-debian.sh /tmp/library-scripts/
 RUN if [ "${INSTALL_AZURE_CLI}" = "true" ]; then bash /tmp/library-scripts/azcli-debian.sh; fi \
     && if [ "${INSTALL_NODE}" = "true" ]; then bash /tmp/library-scripts/node-debian.sh "${NVM_DIR}" "${NODE_VERSION}" "${USERNAME}"; fi \
     && if [ "${INSTALL_DOCKER}" = "true" ]; then \
@@ -40,6 +44,7 @@ RUN if [ "${INSTALL_AZURE_CLI}" = "true" ]; then bash /tmp/library-scripts/azcli
 # Install Terraform, tflint
 ARG TERRAFORM_VERSION=0.12.16
 ARG TFLINT_VERSION=0.8.2
+COPY library-scripts/terraform-debian.sh /tmp/library-scripts/
 RUN bash /tmp/library-scripts/terraform-debian.sh "${TERRAFORM_VERSION}" "${TFLINT_VERSION}"
 
 # [Optional] Uncomment this section to install additional OS packages.
@@ -47,9 +52,10 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends build-essential
 
 # Install Go tools
+ARG GO_VARIANT=latest
 ENV GO111MODULE=auto
 COPY library-scripts/go-debian.sh /tmp/library-scripts/
-RUN bash /tmp/library-scripts/go-debian.sh "latest" "/usr/local/go" "${GOPATH}" "${USERNAME}" "false" \
+RUN bash /tmp/library-scripts/go-debian.sh "${GO_VARIANT}" "/usr/local/go" "${GOPATH}" "${USERNAME}" "false" \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 RUN rm -rf /tmp/library-scripts
