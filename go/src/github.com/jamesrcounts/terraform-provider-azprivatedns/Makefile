@@ -9,7 +9,7 @@ OS_ARCH=linux_amd64
 default: install
 
 clean: 
-	rm ${BINARY}
+	if [ -f ${BINARY} ]; then rm ${BINARY}; fi
 
 fmt: 
 	go fmt ./...
