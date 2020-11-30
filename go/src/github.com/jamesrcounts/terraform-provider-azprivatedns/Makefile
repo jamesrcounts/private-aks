@@ -3,12 +3,13 @@ HOSTNAME=github.com
 NAMESPACE=edu
 NAME=azprivatedns
 BINARY=terraform-provider-${NAME}
-VERSION=0.2
+VERSION=0.2.1
 OS_ARCH=linux_amd64
 
 default: install
 
 clean: 
+	rm -rf ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/
 	if [ -f ${BINARY} ]; then rm ${BINARY}; fi
 
 fmt: 

@@ -14,6 +14,11 @@ terraform {
       source  = "hashicorp/random"
       version = "~> 3.0.0"
     }
+
+    az = {
+      versions = "~> 0.2.0"
+      source   = "github.com/edu/azprivatedns"
+    }
   }
 
   backend "remote" {

@@ -42,6 +42,12 @@ func Provider() terraform.ResourceProvider {
 				DefaultFunc: schema.EnvDefaultFunc("ARM_CLIENT_SECRET", ""),
 				Description: "The Client Secret which should be used. For use When authenticating as a Service Principal using a Client Secret.",
 			},
+			"environment": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_ENVIRONMENT", "public"),
+				Description: "(Optional) The Azure Environment which should be used. This can also be sourced from the ARM_ENVIRONMENT environment variable. Possible values are public, china, german, stack and usgovernment. Defaults to public.",
+			},
 		},
 	}
 
@@ -57,6 +63,7 @@ func initProvider(p *schema.Provider) schema.ConfigureFunc {
 			ClientID:       d.Get("client_id").(string),
 			ClientSecret:   d.Get("client_secret").(string),
 			TenantID:       d.Get("tenant_id").(string),
+			Environment:    d.Get("environment").(string),
 
 			SupportsClientSecretAuth: true,
 			SupportsAzureCliToken:    true,
