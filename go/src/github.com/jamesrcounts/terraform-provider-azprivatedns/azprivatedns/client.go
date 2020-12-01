@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2018-05-01/dns"
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-09-01/network"
+	"github.com/Azure/azure-sdk-for-go/services/privatedns/mgmt/2018-09-01/privatedns"
 	"github.com/hashicorp/go-azure-helpers/authentication"
 	"github.com/hashicorp/go-azure-helpers/sender"
 )
@@ -16,7 +16,7 @@ type Client struct {
 
 	RouteTablesClient    *network.RouteTablesClient
 	SecurityGroupsClient *network.SecurityGroupsClient
-	ZonesClient          *dns.ZonesClient
+	PrivateZonesClient   *privatedns.PrivateZonesClient
 }
 
 // Build creates an initialized Client struct.
@@ -46,7 +46,7 @@ func Build(config *authentication.Config) (*Client, error) {
 	subscriptionID := config.SubscriptionID
 	routeTablesClient := network.NewRouteTablesClient(subscriptionID)
 	securityGroupsClient := network.NewSecurityGroupsClient(subscriptionID)
-	zonesClient := dns.NewZonesClient(subscriptionID)
+	zonesClient := privatedns.NewPrivateZonesClient(subscriptionID)
 
 	routeTablesClient.Authorizer = auth
 	securityGroupsClient.Authorizer = auth
@@ -55,149 +55,6 @@ func Build(config *authentication.Config) (*Client, error) {
 	return &Client{
 		RouteTablesClient:    &routeTablesClient,
 		SecurityGroupsClient: &securityGroupsClient,
-		ZonesClient:          &zonesClient,
+		PrivateZonesClient:   &zonesClient,
 	}, nil
 }
-
-// package azprivatedns
-
-// import (
-// 	"context"
-// 	"fmt"
-// 	"time"
-
-// 	"github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2018-05-01/dns"
-// 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
-// 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-// )
-
-// func dataSourceArmDnsZone() *schema.Resource {
-// 	return &schema.Resource{
-// 		Read: dataSourceArmDnsZoneRead,
-
-// 		Timeouts: &schema.ResourceTimeout{
-// 			Read: schema.DefaultTimeout(5 * time.Minute),
-// 		},
-
-// 		Schema: map[string]*schema.Schema{
-// 			"name": {
-// 				Type:     schema.TypeString,
-// 				Required: true,
-// 			},
-
-// 			"resource_group_name": {
-// 				Type:     schema.TypeString,
-// 				Optional: true,
-// 				Computed: true,
-// 			},
-
-// 			"number_of_record_sets": {
-// 				Type:     schema.TypeInt,
-// 				Computed: true,
-// 			},
-
-// 			"max_number_of_record_sets": {
-// 				Type:     schema.TypeInt,
-// 				Computed: true,
-// 			},
-
-// 			"name_servers": {
-// 				Type:     schema.TypeSet,
-// 				Computed: true,
-// 				Elem:     &schema.Schema{Type: schema.TypeString},
-// 				Set:      schema.HashString,
-// 			},
-
-// 			"tags": tags.SchemaDataSource(),
-// 		},
-// 	}
-// }
-
-// func dataSourceArmDnsZoneRead(d *schema.ResourceData, meta interface{}) error {
-// 	client := meta.(*clients.Client).Dns.ZonesClient
-// 	ctx, cancel := timeouts.ForRead(meta.(*clients.Client).StopContext, d)
-// 	defer cancel()
-
-// 	name := d.Get("name").(string)
-// 	resourceGroup := d.Get("resource_group_name").(string)
-
-// 	var (
-// 		resp dns.Zone
-// 		err  error
-// 	)
-// 	if resourceGroup != "" {
-// 		resp, err = client.Get(ctx, resourceGroup, name)
-// 		if err != nil {
-// 			if utils.ResponseWasNotFound(resp.Response) {
-// 				return fmt.Errorf("Error: DNS Zone %q (Resource Group %q) was not found", name, resourceGroup)
-// 			}
-// 			return fmt.Errorf("Error reading DNS Zone %q (Resource Group %q): %+v", name, resourceGroup, err)
-// 		}
-// 	} else {
-// 		var zone *dns.Zone
-// 		zone, resourceGroup, err = findZone(client, ctx, name)
-// 		if err != nil {
-// 			return err
-// 		}
-
-// 		if zone == nil {
-// 			return fmt.Errorf("Error: DNS Zone %q was not found", name)
-// 		}
-
-// 		resp = *zone
-// 	}
-
-// 	if resp.ID == nil || *resp.ID == "" {
-// 		return fmt.Errorf("failed reading ID for DNS Zone %q (Resource Group %q)", name, resourceGroup)
-// 	}
-// 	d.SetId(*resp.ID)
-
-// 	d.Set("name", name)
-// 	d.Set("resource_group_name", resourceGroup)
-
-// 	if props := resp.ZoneProperties; props != nil {
-// 		d.Set("number_of_record_sets", props.NumberOfRecordSets)
-// 		d.Set("max_number_of_record_sets", props.MaxNumberOfRecordSets)
-
-// 		nameServers := make([]string, 0)
-// 		if ns := props.NameServers; ns != nil {
-// 			nameServers = *ns
-// 		}
-// 		if err := d.Set("name_servers", nameServers); err != nil {
-// 			return err
-// 		}
-// 	}
-
-// 	return tags.FlattenAndSet(d, resp.Tags)
-// }
-
-// func findZone(client *dns.ZonesClient, ctx context.Context, name string) (*dns.Zone, string, error) {
-// 	zonesIterator, err := client.ListComplete(ctx, nil)
-// 	if err != nil {
-// 		return nil, "", fmt.Errorf("listing DNS Zones: %+v", err)
-// 	}
-
-// 	var found *dns.Zone
-// 	for zonesIterator.NotDone() {
-// 		zone := zonesIterator.Value()
-// 		if zone.Name != nil && *zone.Name == name {
-// 			if found != nil {
-// 				return nil, "", fmt.Errorf("found multiple DNS zones with name %q, please specify the resource group", name)
-// 			}
-// 			found = &zone
-// 		}
-// 		if err := zonesIterator.NextWithContext(ctx); err != nil {
-// 			return nil, "", fmt.Errorf("listing DNS Zones: %+v", err)
-// 		}
-// 	}
-
-// 	if found == nil || found.ID == nil {
-// 		return nil, "", fmt.Errorf("could not find DNS zone with name: %q", name)
-// 	}
-
-// 	id, err := parse.DnsZoneID(*found.ID)
-// 	if err != nil {
-// 		return nil, "", fmt.Errorf("DNS zone id not valid: %+v", err)
-// 	}
-// 	return found, id.ResourceGroup, nil
-// }
