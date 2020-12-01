@@ -1,5 +1,9 @@
 default: apply
 
+clean_plugins:
+	rm -rf terraform.d/
+	rm -rf .terraform/plugins
+
 install_plugins:
 	mkdir -p terraform.d/plugins
 	cp -R ~/.terraform.d/plugins/ terraform.d/

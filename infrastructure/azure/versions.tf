@@ -15,9 +15,9 @@ terraform {
       version = "~> 3.0.0"
     }
 
-    az = {
-      versions = "~> 0.2.0"
-      source   = "github.com/edu/azprivatedns"
+    azprivatedns = {
+      versions = "~> 0.2.5"
+      source   = "github.com/jamesrcounts/azprivatedns"
     }
   }
 

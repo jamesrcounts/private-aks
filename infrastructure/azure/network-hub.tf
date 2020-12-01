@@ -43,7 +43,7 @@ resource "azurerm_public_ip_prefix" "hub" {
 
 resource "azurerm_private_dns_zone_virtual_network_link" "private_link_to_hub" {
   name                  = "hub"
-  resource_group_name   = azurerm_resource_group.net.name
-  private_dns_zone_name = azurerm_private_dns_zone.private_link.name
+  resource_group_name   = azurerm_kubernetes_cluster.aks.node_resource_group
+  private_dns_zone_name = azprivatedns_zones.current.dns_zones.0.name
   virtual_network_id    = azurerm_virtual_network.hub.id
 }
