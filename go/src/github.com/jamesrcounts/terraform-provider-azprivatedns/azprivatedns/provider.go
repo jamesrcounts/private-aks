@@ -11,7 +11,8 @@ import (
 // Provider implements the Dns Zones data source
 func Provider() terraform.ResourceProvider {
 	p := &schema.Provider{
-		ResourcesMap: Resources(),
+		DataSourcesMap: dataSourcesMap(),
+		ResourcesMap:   resourcesMap(),
 
 		Schema: map[string]*schema.Schema{
 			// provider schema values taken from azurerm terraform provider
@@ -80,5 +81,18 @@ func initProvider(p *schema.Provider) schema.ConfigureFunc {
 
 		client.StopContext = p.StopContext()
 		return client, nil
+	}
+}
+
+// Resources constructs the resource schema for the provider.
+func resourcesMap() map[string]*schema.Resource {
+	return map[string]*schema.Resource{
+		"azprivatedns_zones": zones(),
+	}
+}
+
+func dataSourcesMap() map[string]*schema.Resource {
+	return map[string]*schema.Resource{
+		"azprivatedns_zones": dataSourcePrivateDNSZones(),
 	}
 }

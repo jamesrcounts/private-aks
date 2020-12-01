@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-09-01/network"
 	"github.com/Azure/azure-sdk-for-go/services/privatedns/mgmt/2018-09-01/privatedns"
 	"github.com/hashicorp/go-azure-helpers/authentication"
 	"github.com/hashicorp/go-azure-helpers/sender"
@@ -14,9 +13,7 @@ import (
 type Client struct {
 	StopContext context.Context
 
-	RouteTablesClient    *network.RouteTablesClient
-	SecurityGroupsClient *network.SecurityGroupsClient
-	PrivateZonesClient   *privatedns.PrivateZonesClient
+	PrivateZonesClient *privatedns.PrivateZonesClient
 }
 
 // Build creates an initialized Client struct.
@@ -44,17 +41,10 @@ func Build(config *authentication.Config) (*Client, error) {
 	}
 
 	subscriptionID := config.SubscriptionID
-	routeTablesClient := network.NewRouteTablesClient(subscriptionID)
-	securityGroupsClient := network.NewSecurityGroupsClient(subscriptionID)
 	zonesClient := privatedns.NewPrivateZonesClient(subscriptionID)
-
-	routeTablesClient.Authorizer = auth
-	securityGroupsClient.Authorizer = auth
 	zonesClient.Authorizer = auth
 
 	return &Client{
-		RouteTablesClient:    &routeTablesClient,
-		SecurityGroupsClient: &securityGroupsClient,
-		PrivateZonesClient:   &zonesClient,
+		PrivateZonesClient: &zonesClient,
 	}, nil
 }

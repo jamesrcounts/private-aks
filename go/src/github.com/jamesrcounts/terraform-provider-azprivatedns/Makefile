@@ -3,7 +3,7 @@ HOSTNAME=github.com
 NAMESPACE=jamesrcounts
 NAME=azprivatedns
 BINARY=terraform-provider-${NAME}
-VERSION=0.2.5
+VERSION=0.2.9
 OS_ARCH=linux_amd64
 
 default: install
@@ -37,7 +37,7 @@ release:
 
 install: build compress
 	mkdir -p ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
-	mv ${BINARY} ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
+	cp ${BINARY} ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
 
 test: 
 	go test -i $(TEST) || exit 1                                                   
