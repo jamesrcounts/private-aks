@@ -1,9 +1,9 @@
 TEST?=$$(go list ./... | grep -v 'vendor')
 HOSTNAME=github.com
-NAMESPACE=edu
+NAMESPACE=jamesrcounts
 NAME=azprivatedns
 BINARY=terraform-provider-${NAME}
-VERSION=0.2.1
+VERSION=0.2.5
 OS_ARCH=linux_amd64
 
 default: install
@@ -12,11 +12,14 @@ clean:
 	rm -rf ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/
 	if [ -f ${BINARY} ]; then rm ${BINARY}; fi
 
-fmt: 
+fmt: *.go azprivatedns/*.go
 	go fmt ./...
 
-build: clean fmt
-	go build -o ${BINARY}
+build: *.go azprivatedns/*.go fmt
+	go build -ldflags="-s -w" -o ${BINARY}
+
+compress: ${BINARY} build
+	upx --brute ${BINARY}
 
 release:
 	GOOS=darwin GOARCH=amd64 go build -o ./bin/${BINARY}_${VERSION}_darwin_amd64
@@ -32,7 +35,7 @@ release:
 	GOOS=windows GOARCH=386 go build -o ./bin/${BINARY}_${VERSION}_windows_386
 	GOOS=windows GOARCH=amd64 go build -o ./bin/${BINARY}_${VERSION}_windows_amd64
 
-install: build
+install: build compress
 	mkdir -p ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
 	mv ${BINARY} ~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
 
