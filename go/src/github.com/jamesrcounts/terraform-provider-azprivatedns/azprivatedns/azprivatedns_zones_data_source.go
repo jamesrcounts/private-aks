@@ -40,6 +40,8 @@ func dataSourcePrivateDNSZonesRead(d *schema.ResourceData, m interface{}) error 
 	zonesClient := m.(*Client).PrivateZonesClient
 	ctx := m.(*Client).StopContext
 
+	resourceGroupName := d.Get("resource_group_name").(string)
+
 	zonesIterator, err := zonesClient.ListByResourceGroupComplete(ctx, resourceGroupName, nil)
 	if err != nil {
 		return fmt.Errorf("listing DNS Zones: %+v", err)
