@@ -1,5 +1,8 @@
 default: apply
 
+clean:
+	terraform destroy -auto-approve
+
 clean_plugins:
 	rm -rf terraform.d/
 	rm -rf .terraform/plugins

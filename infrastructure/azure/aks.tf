@@ -14,6 +14,8 @@
 # --kubernetes-version $KUBE_VERSION \
 # --outbound-type userDefinedRouting
 resource "azurerm_kubernetes_cluster" "aks" {
+  depends_on = [azurerm_role_assignment.aks_vnet_contributor]
+
   name                            = local.aks_cluster_name
   location                        = azurerm_resource_group.main.location
   resource_group_name             = azurerm_resource_group.main.name

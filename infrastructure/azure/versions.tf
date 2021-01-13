@@ -16,8 +16,8 @@ terraform {
     }
 
     azprivatedns = {
-      versions = "~> 0.2.5"
-      source   = "github.com/jamesrcounts/azprivatedns"
+      version = "~> 0.2.5"
+      source  = "github.com/jamesrcounts/azprivatedns"
     }
   }
 
@@ -30,7 +30,7 @@ terraform {
   }
 }
 
-provider azurerm {
+provider "azurerm" {
   features {
     key_vault {
       recover_soft_deleted_key_vaults = true
