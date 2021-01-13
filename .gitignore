@@ -1,5 +1,6 @@
 # Local .terraform directories
 **/.terraform/*
+infrastructure/azure/terraform.d/plugins/github.com/jamesrcounts/azprivatedns
 
 # .tfstate files
 *.tfstate
