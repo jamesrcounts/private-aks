@@ -33,8 +33,8 @@ variables:
     value: infrastructure/azure
 
 stages:
-  - stage: plan_base
-    displayName: 'Plan Base Infrastructure'
+  - stage: plan
+    displayName: 'Plan Infrastructure'
 
     jobs:
       - job: plan
@@ -76,13 +76,13 @@ stages:
 
           - template: pipeline-templates/publish-plan.yml@templates
 
-  - stage: deploy_base
-    displayName: 'Deploy Base Infrastructure'
+  - stage: deploy
+    displayName: 'Deploy Infrastructure'
     jobs:
       - deployment: terraform
         condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
         displayName: 'Change Infrastructure'
-        environment: 'base'
+        environment: 'dev'
         strategy:
           runOnce:
             deploy:
