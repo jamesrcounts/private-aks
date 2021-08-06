@@ -1,6 +1,6 @@
 locals {
   aks_cluster_name        = "${local.project}-cluster"
-  aks_node_resource_group = "${azurerm_resource_group.main.name}-aks"
+  aks_node_resource_group = "${data.azurerm_resource_group.main.name}-aks"
   firewall_name           = "fw-${local.project}"
   location                = "centralus"
   project                 = "private-aks"

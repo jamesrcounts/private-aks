@@ -30,3 +30,5 @@ override.tf.json
 # example: *tfplan*
 **/.DS_Store
 infrastructure/**/azurerm.backend.tfvars
+**/*.tfplan
+**/terraform.auto.tfvars

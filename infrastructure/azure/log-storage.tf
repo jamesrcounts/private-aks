@@ -1,7 +1,7 @@
 resource "azurerm_storage_account" "diagnostics" {
   name                      = substr(replace("sa-${local.project}-diagnostics-${random_pet.fido.id}", "-", ""), 0, 24)
-  resource_group_name       = azurerm_resource_group.main.name
-  location                  = azurerm_resource_group.main.location
+  resource_group_name       = data.azurerm_resource_group.main.name
+  location                  = data.azurerm_resource_group.main.location
   account_kind              = "StorageV2"
   account_tier              = "Standard"
   account_replication_type  = "GRS"

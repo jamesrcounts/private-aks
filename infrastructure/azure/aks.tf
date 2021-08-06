@@ -17,8 +17,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
   depends_on = [azurerm_role_assignment.aks_vnet_contributor]
 
   name                            = local.aks_cluster_name
-  location                        = azurerm_resource_group.main.location
-  resource_group_name             = azurerm_resource_group.main.name
+  location                        = data.azurerm_resource_group.main.location
+  resource_group_name             = data.azurerm_resource_group.main.name
   dns_prefix                      = local.project
   kubernetes_version              = data.azurerm_kubernetes_service_versions.current.latest_version
   node_resource_group             = local.aks_node_resource_group
@@ -110,7 +110,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "user" {
 }
 
 data "azurerm_kubernetes_service_versions" "current" {
-  location = azurerm_resource_group.main.location
+  location = data.azurerm_resource_group.main.location
 }
 
 # TODO

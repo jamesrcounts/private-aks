@@ -1,6 +1,8 @@
 terraform {
   required_version = ">= 0.13"
 
+  backend "azurerm" {}
+
   required_providers {
     azuread = {
       source  = "hashicorp/azuread"
@@ -15,18 +17,10 @@ terraform {
       version = "~> 3.0.0"
     }
 
-    azprivatedns = {
-      version = "~> 0.2.5"
-      source  = "github.com/jamesrcounts/azprivatedns"
-    }
-  }
-
-  backend "remote" {
-    organization = "jamesrcounts"
-
-    workspaces {
-      name = "private-aks"
-    }
+    # azprivatedns = {
+    #   version = "~> 0.2.5"
+    #   source  = "github.com/jamesrcounts/azprivatedns"
+    # }
   }
 }
 

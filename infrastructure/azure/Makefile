@@ -1,7 +1,6 @@
 default: all
 
 backend_instance_id := relaxed-cockatoo
-instance_id         := active-tetra
 
 backend_config:
 	az keyvault secret download \

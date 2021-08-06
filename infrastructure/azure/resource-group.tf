@@ -1,7 +1,5 @@
-resource "azurerm_resource_group" "main" {
-  name     = "rg-${local.project}"
-  location = local.location
-  tags     = local.tags
+data "azurerm_resource_group" "main" {
+  name = "rg-${local.project}"
 }
 
 resource "azurerm_resource_group" "net" {
@@ -9,6 +7,8 @@ resource "azurerm_resource_group" "net" {
   location = local.location
   tags     = local.tags
 }
+
+
 
 # az role assignment create --role "Contributor" --assignee $SERVICE_PRINCIPAL_ID -g $VNET_GROUP
 resource "azurerm_role_assignment" "aks_vnet_contributor" {
