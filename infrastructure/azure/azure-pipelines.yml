@@ -30,7 +30,7 @@ pool:
 
 variables:
   - group: terraform-version
-  - name: projectFolder
+  - name: project_folder
     value: infrastructure/azure
 
 stages:
@@ -60,7 +60,7 @@ stages:
               AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
             inputs:
               targetType: 'inline'
-              workingDirectory: $(projectFolder)
+              workingDirectory: $(project_folder)
               script: |
                 set -euo pipefail
 
@@ -103,7 +103,7 @@ stages:
                     AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
                   inputs:
                     targetType: 'inline'
-                    workingDirectory: $(projectFolder)
+                    workingDirectory: $(project_folder)
                     script: |
                       set -euo pipefail
       
