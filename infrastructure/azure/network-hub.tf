@@ -1,9 +1,9 @@
 # az network vnet create -g $VNET_GROUP -n $HUB_VNET_NAME --address-prefixes 10.0.0.0/22
 resource "azurerm_virtual_network" "hub" {
   address_space       = ["10.0.0.0/22"]
-  location            = azurerm_resource_group.net.location
+  location            = data.azurerm_resource_group.net.location
   name                = local.vnet_name_hub
-  resource_group_name = azurerm_resource_group.net.name
+  resource_group_name = data.azurerm_resource_group.net.name
   tags                = local.tags
 }
 
@@ -11,7 +11,7 @@ resource "azurerm_virtual_network" "hub" {
 resource "azurerm_subnet" "firewall" {
   address_prefixes     = ["10.0.0.0/24"]
   name                 = local.subnet_name_firewall
-  resource_group_name  = azurerm_resource_group.net.name
+  resource_group_name  = data.azurerm_resource_group.net.name
   virtual_network_name = azurerm_virtual_network.hub.name
 }
 
@@ -19,7 +19,7 @@ resource "azurerm_subnet" "firewall" {
 resource "azurerm_subnet" "jumpboxes" {
   address_prefixes     = ["10.0.1.0/24"]
   name                 = local.subnet_name_jump
-  resource_group_name  = azurerm_resource_group.net.name
+  resource_group_name  = data.azurerm_resource_group.net.name
   virtual_network_name = azurerm_virtual_network.hub.name
 }
 
@@ -28,16 +28,16 @@ resource "azurerm_virtual_network_peering" "hub_to_spoke" {
   allow_virtual_network_access = true
   name                         = "hub-to-spoke"
   remote_virtual_network_id    = azurerm_virtual_network.spoke.id
-  resource_group_name          = azurerm_resource_group.net.name
+  resource_group_name          = data.azurerm_resource_group.net.name
   virtual_network_name         = azurerm_virtual_network.hub.name
 }
 
 # A block of IPs for the hub
 resource "azurerm_public_ip_prefix" "hub" {
-  location            = azurerm_resource_group.net.location
+  location            = data.azurerm_resource_group.net.location
   name                = "pib-${local.project}-hub"
   prefix_length       = 31
-  resource_group_name = azurerm_resource_group.net.name
+  resource_group_name = data.azurerm_resource_group.net.name
   tags                = local.tags
 }
 

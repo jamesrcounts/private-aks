@@ -34,8 +34,7 @@ init:
 	terraform providers
 
 config:
-	@echo 'resource_group_name="rg-$(instance_id)"' > terraform.auto.tfvars
-	@echo 'backend_resource_group_name="rg-backend-$(backend_instance_id)"' >> terraform.auto.tfvars
+	@echo 'backend_resource_group_name="rg-backend-$(backend_instance_id)"' > terraform.auto.tfvars
 
 validate:
 	terraform validate

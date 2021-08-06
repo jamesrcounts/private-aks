@@ -2,10 +2,10 @@
 resource "azurerm_public_ip" "firewall" {
   allocation_method   = "Static"
   sku                 = "Standard"
-  location            = azurerm_resource_group.net.location
+  location            = data.azurerm_resource_group.net.location
   name                = local.project
   public_ip_prefix_id = azurerm_public_ip_prefix.hub.id
-  resource_group_name = azurerm_resource_group.net.name
+  resource_group_name = data.azurerm_resource_group.net.name
   tags                = local.tags
 }
 
@@ -13,8 +13,8 @@ resource "azurerm_public_ip" "firewall" {
 # az network firewall ip-config create --firewall-name $DEPLOYMENT_NAME --name $DEPLOYMENT_NAME --public-ip-address $DEPLOYMENT_NAME --resource-group $VNET_GROUP --vnet-name $HUB_VNET_NAME
 resource "azurerm_firewall" "fw" {
   name                = local.firewall_name
-  location            = azurerm_resource_group.net.location
-  resource_group_name = azurerm_resource_group.net.name
+  location            = data.azurerm_resource_group.net.location
+  resource_group_name = data.azurerm_resource_group.net.name
 
   ip_configuration {
     name                 = "${local.firewall_name}-ip-config"
@@ -41,7 +41,7 @@ resource "azurerm_firewall" "fw" {
 resource "azurerm_firewall_network_rule_collection" "time" {
   name                = "time"
   azure_firewall_name = azurerm_firewall.fw.name
-  resource_group_name = azurerm_resource_group.net.name
+  resource_group_name = data.azurerm_resource_group.net.name
   priority            = 101
   action              = "Allow"
 
@@ -82,7 +82,7 @@ resource "azurerm_firewall_network_rule_collection" "time" {
 resource "azurerm_firewall_network_rule_collection" "dns" {
   name                = "dns"
   azure_firewall_name = azurerm_firewall.fw.name
-  resource_group_name = azurerm_resource_group.net.name
+  resource_group_name = data.azurerm_resource_group.net.name
   priority            = 102
   action              = "Allow"
 
@@ -123,7 +123,7 @@ resource "azurerm_firewall_network_rule_collection" "dns" {
 resource "azurerm_firewall_network_rule_collection" "servicetags" {
   name                = "servicetags"
   azure_firewall_name = azurerm_firewall.fw.name
-  resource_group_name = azurerm_resource_group.net.name
+  resource_group_name = data.azurerm_resource_group.net.name
   priority            = 110
   action              = "Allow"
 
@@ -164,7 +164,7 @@ resource "azurerm_firewall_network_rule_collection" "servicetags" {
 resource "azurerm_firewall_application_rule_collection" "aks" {
   name                = "aks"
   azure_firewall_name = azurerm_firewall.fw.name
-  resource_group_name = azurerm_resource_group.net.name
+  resource_group_name = data.azurerm_resource_group.net.name
   priority            = 101
   action              = "Allow"
 
@@ -204,7 +204,7 @@ resource "azurerm_firewall_application_rule_collection" "aks" {
 resource "azurerm_firewall_application_rule_collection" "os_updates" {
   name                = "os-updates"
   azure_firewall_name = azurerm_firewall.fw.name
-  resource_group_name = azurerm_resource_group.net.name
+  resource_group_name = data.azurerm_resource_group.net.name
   priority            = 102
   action              = "Allow"
 
