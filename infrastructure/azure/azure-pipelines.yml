@@ -1,5 +1,13 @@
 name: 0.2.$(Rev:r)
 
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: jamesrcounts/devops-governance
+      endpoint: 'GithHub Personal Access Token'
+      ref: refs/tags/2021.06
+
 trigger:
   batch: true
   branches:
@@ -21,7 +29,7 @@ pool:
   vmImage: ubuntu-latest
   
 variables:
-  - template: '../pipeline-templates/infrastructure-variables.yml'
+  - template: pipeline-templates/infrastructure-variables.yml@templates
   - group: aws
 
 
@@ -39,9 +47,9 @@ stages:
           - checkout: self
             fetchDepth: 1
 
-          - template: '../pipeline-templates/prepare-credentials.yml'
-          - template: '../pipeline-templates/pin-terraform.yml'
-          - template: '../pipeline-templates/terraform-init.yml'
+          - template: pipeline-templates/prepare-credentials.yml@templates
+          - template: pipeline-templates/pin-terraform.yml@templates
+          - template: pipeline-templates/terraform-init.yml@templates
 
           - task: Bash@3
             name: 'terraform_plan'
@@ -70,7 +78,7 @@ stages:
                   -var "configuration_keyvault_name=${KEYVAULT_NAME}" \
                   -out ${BUILD_BUILDNUMBER}.tfplan
 
-          - template: '../pipeline-templates/publish-plan.yml'
+          - template: pipeline-templates/publish-plan.yml@templates
 
   - stage: deploy_base
     displayName: 'Deploy Base Infrastructure'
@@ -86,9 +94,9 @@ stages:
           runOnce:
             deploy:
               steps:
-                - template: '../pipeline-templates/extract-plan.yml'
-                - template: '../pipeline-templates/prepare-credentials.yml'
-                - template: '../pipeline-templates/pin-terraform.yml'
+                - template: pipeline-templates/extract-plan.yml@templates
+                - template: pipeline-templates/prepare-credentials.yml@templates
+                - template: pipeline-templates/pin-terraform.yml@templates
 
                 - task: Bash@3
                   displayName: 'Terraform Apply'
