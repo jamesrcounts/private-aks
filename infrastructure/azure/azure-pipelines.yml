@@ -1,0 +1,113 @@
+name: 0.2.$(Rev:r)
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - infrastructure/stages/azure
+    exclude:
+      - infrastructure/stages/azure/azure-pipelines.yml
+pr:
+  autoCancel: true
+  drafts: true
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+  
+variables:
+  - template: '../pipeline-templates/infrastructure-variables.yml'
+  - group: aws
+
+
+stages:
+  - stage: plan_base
+    displayName: 'Plan Base Infrastructure'
+    variables:
+      - name: projectFolder
+        value: infrastructure/stages/base
+
+    jobs:
+      - job: plan
+        displayName: 'Infrastructure Plan'
+        steps:
+          - checkout: self
+            fetchDepth: 1
+
+          - template: '../pipeline-templates/prepare-credentials.yml'
+          - template: '../pipeline-templates/pin-terraform.yml'
+          - template: '../pipeline-templates/terraform-init.yml'
+
+          - task: Bash@3
+            name: 'terraform_plan'
+            displayName: 'Terraform Plan'
+            env:
+              ARM_CLIENT_ID: $(AZURE_CLIENT_ID)
+              ARM_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
+              ARM_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
+              ARM_TENANT_ID: $(AZURE_TENANT_ID)
+              AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+              AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+            inputs:
+              targetType: 'inline'
+              workingDirectory: $(projectFolder)
+              script: |
+                set -euo pipefail
+
+                if [ ${BUILD_REASON} == 'PullRequest' ]; then
+                  export TF_CLI_ARGS="-lock=false"
+                fi
+
+                terraform plan \
+                  -input=false \
+                  -var="resource_group_name=${AZURE_ENV_RG}" \
+                  -var "backend_resource_group_name=${KEYVAULT_RESOURCE_GROUP_NAME}" \
+                  -var "configuration_keyvault_name=${KEYVAULT_NAME}" \
+                  -out ${BUILD_BUILDNUMBER}.tfplan
+
+          - template: '../pipeline-templates/publish-plan.yml'
+
+  - stage: deploy_base
+    displayName: 'Deploy Base Infrastructure'
+    variables:
+      - name: projectFolder
+        value: infrastructure/stages/base
+    jobs:
+      - deployment: terraform
+        condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+        displayName: 'Change Infrastructure'
+        environment: 'base'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: '../pipeline-templates/extract-plan.yml'
+                - template: '../pipeline-templates/prepare-credentials.yml'
+                - template: '../pipeline-templates/pin-terraform.yml'
+
+                - task: Bash@3
+                  displayName: 'Terraform Apply'
+                  env:
+                    ARM_CLIENT_ID: $(AZURE_CLIENT_ID)
+                    ARM_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
+                    ARM_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
+                    ARM_TENANT_ID: $(AZURE_TENANT_ID)
+                    AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+                    AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+                  inputs:
+                    targetType: 'inline'
+                    workingDirectory: $(projectFolder)
+                    script: |
+                      set -euo pipefail
+      
+                      terraform apply \
+                        -input=false \
+                        ${BUILD_BUILDNUMBER}.tfplan
+
+
+
