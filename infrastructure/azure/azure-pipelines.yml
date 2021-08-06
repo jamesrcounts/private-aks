@@ -15,9 +15,9 @@ trigger:
       - main
   paths:
     include:
-      - infrastructure/stages/azure
+      - infrastructure/azure
     exclude:
-      - infrastructure/stages/azure/azure-pipelines.yml
+      - infrastructure/azure/azure-pipelines.yml
 pr:
   autoCancel: true
   drafts: true
@@ -28,12 +28,13 @@ pr:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  - name: projectFolder
+    value: infrastructure/azure
+
 stages:
   - stage: plan_base
     displayName: 'Plan Base Infrastructure'
-    variables:
-      - name: projectFolder
-        value: infrastructure/stages/base
 
     jobs:
       - job: plan
@@ -77,9 +78,6 @@ stages:
 
   - stage: deploy_base
     displayName: 'Deploy Base Infrastructure'
-    variables:
-      - name: projectFolder
-        value: infrastructure/stages/base
     jobs:
       - deployment: terraform
         condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
@@ -111,6 +109,3 @@ stages:
                       terraform apply \
                         -input=false \
                         ${BUILD_BUILDNUMBER}.tfplan
-
-
-
