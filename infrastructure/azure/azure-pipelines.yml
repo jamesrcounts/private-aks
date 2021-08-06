@@ -27,11 +27,6 @@ pr:
 
 pool:
   vmImage: ubuntu-latest
-  
-variables:
-  - template: pipeline-templates/infrastructure-variables.yml@templates
-  - group: aws
-
 
 stages:
   - stage: plan_base
