@@ -29,6 +29,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
+  - group: terraform-version
   - name: projectFolder
     value: infrastructure/azure
 
