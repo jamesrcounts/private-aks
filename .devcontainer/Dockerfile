@@ -47,6 +47,10 @@ ARG TFLINT_VERSION=0.8.2
 COPY library-scripts/terraform-debian.sh /tmp/library-scripts/
 RUN bash /tmp/library-scripts/terraform-debian.sh "${TERRAFORM_VERSION}" "${TFLINT_VERSION}"
 
+# Install powershell
+COPY library-scripts/powershell-debian.sh /tmp/library-scripts/
+RUN bash /tmp/library-scripts/powershell-debian.sh
+
 # [Optional] Uncomment this section to install additional OS packages.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends build-essential \

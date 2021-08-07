@@ -32,3 +32,4 @@ override.tf.json
 infrastructure/**/azurerm.backend.tfvars
 **/*.tfplan
 **/terraform.auto.tfvars
+infrastructure/azure/Add-AzureAdRoles.ps1
