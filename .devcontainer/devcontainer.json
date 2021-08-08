@@ -33,7 +33,8 @@
 		"ms-azuretools.vscode-docker",
 		"ms-vscode.azurecli",
 		"tyriar.sort-lines",
-		"golang.Go"
+		"golang.Go",
+		"ms-vscode.powershell"
 	]
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
