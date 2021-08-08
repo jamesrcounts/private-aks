@@ -10,9 +10,9 @@ backend_config:
 
 aad_script:
 	az keyvault secret download \
-		--name add-azureadroles-ps1 \
+		--name add-azuread-roles-sh \
 		--vault-name kv-$(backend_instance_id) \
-		--file Add-AzureAdRoles.ps1
+		--file add-azuread-roles.sh
 
 clean: config
 	terraform destroy -auto-approve

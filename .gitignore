@@ -33,3 +33,4 @@ infrastructure/**/azurerm.backend.tfvars
 **/*.tfplan
 **/terraform.auto.tfvars
 infrastructure/azure/Add-AzureAdRoles.ps1
+infrastructure/azure/add-azuread-roles.sh
