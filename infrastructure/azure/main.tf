@@ -4,13 +4,13 @@ locals {
   firewall_name           = "fw-${local.project}"
   location                = "centralus"
   project                 = "private-aks"
-  subnet_name_agents      = "aks-agents-subnet"
-  subnet_id_agents        = azurerm_subnet.agents.id
-  subnet_name_firewall    = "AzureFirewallSubnet"
-  subnet_name_ingress     = "ingress-subnet"
-  subnet_name_jump        = "jumpbox-subnet"
-  vnet_name_hub           = "hub-vnet"
-  vnet_name_spoke         = "aks-vnet"
+  #subnet_name_agents      = "aks-agents-subnet"
+  subnet_id_agents = module.networks.subnets["agents"].id
+  #subnet_name_firewall    = "AzureFirewallSubnet"
+  #subnet_name_ingress     = "ingress-subnet"
+  #subnet_name_jump        = "jumpbox-subnet"
+  #vnet_name_hub           = "hub-vnet"
+  #vnet_name_spoke         = "aks-vnet"
 
   tags = {
     environment = local.project

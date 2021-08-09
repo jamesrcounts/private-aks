@@ -18,7 +18,7 @@ resource "azurerm_firewall" "fw" {
 
   ip_configuration {
     name                 = "${local.firewall_name}-ip-config"
-    subnet_id            = azurerm_subnet.firewall.id
+    subnet_id            = module.networks.subnets["firewall"].id
     public_ip_address_id = azurerm_public_ip.firewall.id
   }
 }
