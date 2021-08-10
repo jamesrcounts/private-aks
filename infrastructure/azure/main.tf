@@ -1,9 +1,9 @@
 locals {
   aks_cluster_name        = "${local.project}-cluster"
   aks_node_resource_group = "${data.azurerm_resource_group.main.name}-aks"
-  firewall_name           = "fw-${local.project}"
-  location                = "centralus"
-  project                 = "private-aks"
+  # firewall_name           = "fw-${local.project}"
+  location = "centralus"
+  project  = "private-aks"
   #subnet_name_agents      = "aks-agents-subnet"
   subnet_id_agents = module.networks.subnets["agents"].id
   #subnet_name_firewall    = "AzureFirewallSubnet"
