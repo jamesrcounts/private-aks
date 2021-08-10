@@ -1,12 +1,21 @@
 module "firewall" {
   source = "../"
 
-  resource_group = data.azurerm_resource_group.net
-  subnet_id      = azurerm_subnet.example.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.example.id
+  resource_group             = data.azurerm_resource_group.net
+  subnet_id                  = azurerm_subnet.example.id
 }
 
 data "azurerm_resource_group" "net" {
   name = "rg-${var.instance_id}"
+}
+
+resource "azurerm_log_analytics_workspace" "example" {
+  name                = "acctest-01"
+  location            = data.azurerm_resource_group.net.location
+  resource_group_name = data.azurerm_resource_group.net.name
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
 }
 
 resource "azurerm_virtual_network" "example" {

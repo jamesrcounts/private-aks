@@ -1,3 +1,8 @@
+variable "log_analytics_workspace_id" {
+  description = "(Required) Specifies the ID of a Log Analytics Workspace where Diagnostics Data should be sent."
+  type        = string
+}
+
 variable "resource_group" {
   description = "(Required) The resource group to deploy networks into."
   type = object({
