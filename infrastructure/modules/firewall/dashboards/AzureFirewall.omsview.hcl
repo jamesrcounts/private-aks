@@ -1,26 +1,26 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
             "type": "string",
-            "defaultValue": ""
+            "defaultValue": "${location}"
         },
         "resourcegroup": {
             "type": "string",
-            "defaultValue": ""
+            "defaultValue": "${resource_group_name}"
         },
         "subscriptionId": {
             "type": "string",
-            "defaultValue": ""
+            "defaultValue": "${subscription_id}"
         },
         "workspace": {
             "type": "string",
-            "defaultValue": ""
+            "defaultValue": "${workspace_id}"
         },
         "workspaceapiversion": {
             "type": "string",
-            "defaultValue": ""
+            "defaultValue": "${workspace_api_version}"
         }
     },
     "resources": [
