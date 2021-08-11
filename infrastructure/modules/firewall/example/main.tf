@@ -1,10 +1,17 @@
 module "firewall" {
   source = "../"
 
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.example.id
-  resource_group             = data.azurerm_resource_group.net
-  subnet_id                  = azurerm_subnet.example.id
+  resource_group = data.azurerm_resource_group.net
+  subnet_id      = azurerm_subnet.example.id
+  log_analytics_workspace = merge(
+    azurerm_log_analytics_workspace.example,
+    {
+      subscription_id = data.azurerm_subscription.current.id
+    }
+  )
 }
+
+data "azurerm_subscription" "current" {}
 
 data "azurerm_resource_group" "net" {
   name = "rg-${var.instance_id}"

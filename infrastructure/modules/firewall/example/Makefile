@@ -16,3 +16,6 @@ fmt:
 
 config:
 	@echo 'instance_id="$(instance_id)"' > terraform.auto.tfvars
+
+clean: 
+	terraform destroy -auto-approve
