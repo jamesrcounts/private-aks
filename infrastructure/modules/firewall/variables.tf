@@ -1,9 +1,10 @@
 variable "log_analytics_workspace" {
   description = "(Required) Specifies Log Analytics Workspace to use for diagnostics and workbooks."
   type = object({
-    subscription_id     = string
-    resource_group_name = string
+    id = string
     name                = string
+    resource_group_name = string
+    subscription_id     = string
   })
 }
 
