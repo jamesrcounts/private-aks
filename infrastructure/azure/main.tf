@@ -12,6 +12,8 @@ locals {
   #vnet_name_hub           = "hub-vnet"
   #vnet_name_spoke         = "aks-vnet"
 
+  hub_instance_id = data.azurerm_resource_group.net.tags["instance_id"]
+
   tags = {
     environment = local.project
   }
