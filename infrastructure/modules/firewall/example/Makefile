@@ -3,7 +3,7 @@ default: plan
 instance_id := moral-hound
 
 init:
-	terraform init
+	terraform init -upgrade
 
 plan: fmt config init
 	terraform plan -out plan.tfplan 
