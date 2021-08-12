@@ -1,5 +1,5 @@
 module "firewall" {
-  source = "../modules/firewall"
+  source = "github.com/jamesrcounts/private-aks.git//infrastructure/modules/firewall?ref=lz"
 
   resource_group = data.azurerm_resource_group.net
   subnet_id      = module.networks.subnets["firewall"].id
