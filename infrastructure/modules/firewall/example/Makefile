@@ -6,7 +6,7 @@ init:
 	terraform init
 
 plan: fmt config init
-	terraform plan -out plan.tfplan
+	terraform plan -out plan.tfplan 
 
 apply:
 	terraform apply plan.tfplan

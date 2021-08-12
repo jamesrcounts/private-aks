@@ -1,17 +1,15 @@
-# Imported from: https://raw.githubusercontent.com/Azure/azure-docs-json-samples/master/azure-firewall/AzureFirewall.omsview
-resource "azurerm_dashboard" "dashboard" {
-  location            = var.resource_group.location
+# Imported from: https://github.com/Azure/Azure-Network-Security/blob/59f3913c192c74718fb1cab675f32c3b375da8a4/Azure%20Firewall/Workbook%20-%20Azure%20Firewall%20Monitor%20Workbook/Azure%20Firewall_ARM.json
+# License: https://github.com/Azure/Azure-Network-Security/blob/59f3913c192c74718fb1cab675f32c3b375da8a4/LICENSE
+resource "azurerm_template_deployment" "workbook" {
   name                = "AzureFirewall"
   resource_group_name = var.resource_group.name
-  tags                = var.resource_group.tags
+  deployment_mode     = "Incremental"
 
-  dashboard_properties = templatefile(
-    "${path.module}/dashboards/AzureFirewall.omsview.hcl",
+  template_body = templatefile(
+    "${path.module}/workbooks/AzureFirewall.arm.json.hcl",
     {
-      location              = var.log_analytics_workspace.location
-      resource_group_name   = var.log_analytics_workspace.resource_group_name
-      subscription_id       = var.log_analytics_workspace.subscription_id,
-      workspace_id          = var.log_analytics_workspace.workspace_id
-      workspace_api_version = "2020-08-01"
+      workspace_resource_group_name = var.log_analytics_workspace.resource_group_name
+      workspace_subscription_id     = var.log_analytics_workspace.subscription_id,
+      workspace_name                = var.log_analytics_workspace.name
   })
 }

@@ -6,7 +6,7 @@ module "firewall" {
   log_analytics_workspace = merge(
     azurerm_log_analytics_workspace.example,
     {
-      subscription_id = data.azurerm_subscription.current.id
+      subscription_id = data.azurerm_subscription.current.subscription_id
     }
   )
 }
