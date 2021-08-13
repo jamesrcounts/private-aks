@@ -18,7 +18,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "rules" {
     action   = "Allow"
 
     rule {
-      name = "service-tag"
+      name = "fqdn-tag"
       protocols {
         type = "Http"
         port = 80
@@ -28,7 +28,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "rules" {
         port = 443
       }
       source_addresses  = ["*"]
-      destination_fqdns = ["AzureKubernetesService"]
+      destination_fqdn_tags = ["AzureKubernetesService"]
     }
 
     rule {
