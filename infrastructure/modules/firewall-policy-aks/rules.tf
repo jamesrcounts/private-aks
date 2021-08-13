@@ -30,6 +30,20 @@ resource "azurerm_firewall_policy_rule_collection_group" "rules" {
       source_addresses  = ["*"]
       destination_fqdns = ["AzureKubernetesService"]
     }
+
+    rule {
+      name = "fqdn"
+      protocols {
+        type = "Http"
+        port = 80
+      }
+      protocols {
+        type = "Https"
+        port = 443
+      }
+      source_addresses  = ["*"]
+      destination_fqdns = ["data.policy.core.windows.net"]
+    }
   }
 
   # az network firewall application-rule create  \
