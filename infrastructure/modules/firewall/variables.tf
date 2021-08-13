@@ -1,3 +1,9 @@
+variable "firewall_policy_id" {
+  default     = null
+  description = "(Optional) The ID of the Firewall Policy applied to this Firewall."
+  type        = string
+}
+
 variable "log_analytics_workspace" {
   description = "(Required) Specifies Log Analytics Workspace to use for diagnostics and workbooks."
   type = object({
