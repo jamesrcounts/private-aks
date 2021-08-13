@@ -18,7 +18,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "rules" {
     action   = "Allow"
 
     rule {
-      name = "fqdn"
+      name = "service-tag"
       protocols {
         type = "Http"
         port = 80
