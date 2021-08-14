@@ -27,7 +27,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "rules" {
         type = "Https"
         port = 443
       }
-      source_addresses  = ["*"]
+      source_addresses      = ["*"]
       destination_fqdn_tags = ["AzureKubernetesService"]
     }
 
@@ -41,8 +41,12 @@ resource "azurerm_firewall_policy_rule_collection_group" "rules" {
         type = "Https"
         port = 443
       }
-      source_addresses  = ["*"]
-      destination_fqdns = ["data.policy.core.windows.net"]
+      source_addresses = ["*"]
+      destination_fqdns = [
+        "data.policy.core.windows.net",
+        "store.policy.core.windows.net",
+        "dc.services.visualstudio.com"
+      ]
     }
   }
 
