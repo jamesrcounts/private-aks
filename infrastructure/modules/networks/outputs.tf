@@ -9,3 +9,12 @@ output "subnets" {
     }
   }
 }
+
+output "networks" {
+  description = "Describes the networks created by this module."
+  value = {
+    hub = {
+      id = azurerm_virtual_network.hub.id
+    }
+  }
+}
