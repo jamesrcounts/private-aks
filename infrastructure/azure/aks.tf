@@ -10,4 +10,5 @@ module "aks_cluster" {
   resource_group             = data.azurerm_resource_group.main
   subnet_id                  = module.networks.subnets["agents"].id
   user_assigned_identity_id  = module.aks_cluster_identity.msi_resource_id
+  private_dns_zone_id        = azurerm_private_dns_zone.azmk8s.id
 }
