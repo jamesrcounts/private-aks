@@ -12,7 +12,7 @@ resource "azurerm_user_assigned_identity" "aks" {
 // az role assignment create --role "Virtual Machine Contributor" --assignee $MSI_CLIENT_ID -g $VNET_GROUP
 resource "azurerm_role_assignment" "aks_vnet_contributor" {
   principal_id         = azurerm_user_assigned_identity.aks.principal_id
-  role_definition_name = "Virtual Machine Contributor"
+  role_definition_name = "Network Contributor"
   scope                = var.scope
 }
 

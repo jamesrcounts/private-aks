@@ -1,18 +1,4 @@
-# az aks create \
-# --resource-group $KUBE_GROUP \
-# --name $KUBE_NAME \
-# --load-balancer-sku standard \
-# --vm-set-type VirtualMachineScaleSets \
-# --enable-private-cluster \
-# --network-plugin kubenet \
-# --vnet-subnet-id $KUBE_AGENT_SUBNET_ID \
-# --docker-bridge-address 172.17.0.1/16 \
-# --dns-service-ip 10.2.0.10 \
-# --service-cidr 10.2.0.0/24 \
-# --service-principal $SERVICE_PRINCIPAL_ID \
-# --client-secret $SERVICE_PRINCIPAL_SECRET \
-# --kubernetes-version $KUBE_VERSION \
-# --outbound-type userDefinedRouting
+# az aks create --resource-group $KUBE_GROUP --name $KUBE_NAME --load-balancer-sku standard --vm-set-type VirtualMachineScaleSets --enable-private-cluster --network-plugin azure --vnet-subnet-id $KUBE_AGENT_SUBNET_ID --docker-bridge-address 172.17.0.1/16 --dns-service-ip 10.2.0.10 --service-cidr 10.2.0.0/24 --enable-managed-identity --assign-identity $MSI_RESOURCE_ID --kubernetes-version $KUBE_VERSION --outbound-type userDefinedRouting
 resource "azurerm_kubernetes_cluster" "aks" {
   depends_on = [
     azurerm_subnet_route_table_association.aks
