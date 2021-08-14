@@ -75,6 +75,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     docker_bridge_cidr = "172.17.0.1/16"
     load_balancer_sku  = "Standard"
     network_plugin     = "kubenet"
+    network_policy     = "calico"
     outbound_type      = "userDefinedRouting"
     service_cidr       = "10.2.0.0/24"
   }
