@@ -6,6 +6,7 @@ module "test" {
   user_assigned_identity_id  = azurerm_user_assigned_identity.aks.id
   log_analytics_workspace_id = azurerm_log_analytics_workspace.insights.id
   subnet_id                  = azurerm_subnet.example.id
+  private_dns_zone_id        = azurerm_private_dns_zone.example.id
 }
 
 data "azurerm_resource_group" "net" {
@@ -45,6 +46,11 @@ resource "azurerm_subnet" "example" {
   resource_group_name  = data.azurerm_resource_group.net.name
   virtual_network_name = azurerm_virtual_network.example.name
   address_prefixes     = ["10.0.1.0/24"]
+}
+
+resource "azurerm_private_dns_zone" "example" {
+  name                = "privatelink.eastus2.azmk8s.io"
+  resource_group_name = data.azurerm_resource_group.net.name
 }
 
 provider "azurerm" {

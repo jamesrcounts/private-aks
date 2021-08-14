@@ -14,16 +14,17 @@
 # --kubernetes-version $KUBE_VERSION \
 # --outbound-type userDefinedRouting
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                            = "aks-${local.instance_id}"
-  location                        = var.resource_group.location
-  resource_group_name             = var.resource_group.name
-  dns_prefix                      = local.instance_id
-  kubernetes_version              = data.azurerm_kubernetes_service_versions.current.latest_version
-  node_resource_group             = "${var.resource_group.name}-aks"
-  sku_tier                        = "Free"
   api_server_authorized_ip_ranges = []
+  dns_prefix                      = local.instance_id
   enable_pod_security_policy      = false
+  kubernetes_version              = data.azurerm_kubernetes_service_versions.current.latest_version
+  location                        = var.resource_group.location
+  name                            = "aks-${local.instance_id}"
+  node_resource_group             = "${var.resource_group.name}-aks"
   private_cluster_enabled         = true
+  private_dns_zone_id             = var.private_dns_zone_id
+  resource_group_name             = var.resource_group.name
+  sku_tier                        = "Free"
   tags                            = var.resource_group.tags
 
   addon_profile {

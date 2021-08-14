@@ -27,3 +27,7 @@ variable "user_assigned_identity_id" {
   type        = string
 }
 
+variable "private_dns_zone_id" {
+  description = "(Required) The ID of Private DNS Zone which should be delegated to this Cluster."
+  type        = string
+}
