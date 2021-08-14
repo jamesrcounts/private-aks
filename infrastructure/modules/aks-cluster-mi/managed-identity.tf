@@ -16,6 +16,8 @@ resource "azurerm_role_assignment" "aks_vnet_contributor" {
   scope                = var.scope
 }
 
-
-
-
+resource "azurerm_role_assignment" "aks_dns_zone_contributor" {
+  scope                = var.scope
+  role_definition_name = "Private DNS Zone Contributor"
+  principal_id         = azurerm_user_assigned_identity.aks.principal_id
+}
