@@ -15,7 +15,6 @@
 # --outbound-type userDefinedRouting
 resource "azurerm_kubernetes_cluster" "aks" {
   depends_on = [
-    azurerm_role_assignment.aks_vnet_contributor,
     azurerm_subnet_route_table_association.aks
   ]
 
@@ -68,9 +67,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
     vnet_subnet_id        = local.subnet_id_agents
   }
 
-  service_principal {
-    client_id     = azuread_service_principal.aks_principal.application_id
-    client_secret = random_password.password.result
+  identity {
+    type                      = "UserAssigned"
+    user_assigned_identity_id = module.aks_cluster_identity.msi_resource_id
   }
 
   network_profile {
