@@ -21,3 +21,10 @@ resource "azurerm_role_assignment" "aks_dns_zone_contributor" {
   role_definition_name = "Private DNS Zone Contributor"
   principal_id         = azurerm_user_assigned_identity.aks.principal_id
 }
+
+
+resource "azurerm_role_assignment" "aks_metrics_publisher" {
+  scope                = var.resource_group.id
+  role_definition_name = "Monitoring Metrics Publisher"
+  principal_id         = azurerm_user_assigned_identity.aks.principal_id
+}
