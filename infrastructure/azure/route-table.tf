@@ -5,6 +5,11 @@ resource "azurerm_route_table" "aks" {
   name                = "rt-${local.hub_instance_id}"
   resource_group_name = data.azurerm_resource_group.net.name
   tags                = data.azurerm_resource_group.net.tags
+
+  lifecycle {
+    # AKS will assume control of the tags
+    ignore_changes = [tags]
+  }
 }
 
 # az network route-table route create --resource-group $VNET_GROUP --name $DEPLOYMENT_NAME --route-table-name $DEPLOYMENT_NAME --address-prefix 0.0.0.0/0 --next-hop-type VirtualAppliance --next-hop-ip-address $FW_PRIVATE_IP --subscription $SUBSCRIPTION_ID
@@ -21,4 +26,9 @@ resource "azurerm_route" "aks_traffic_to_hub" {
 resource "azurerm_subnet_route_table_association" "aks" {
   route_table_id = azurerm_route_table.aks.id
   subnet_id      = module.networks.subnets["agents"].id
+}
+
+resource "azurerm_subnet_route_table_association" "jumpbox" {
+  route_table_id = azurerm_route_table.aks.id
+  subnet_id      = module.networks.subnets["jumpbox"].id
 }
