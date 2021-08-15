@@ -16,11 +16,6 @@ terraform {
       source  = "hashicorp/random"
       version = "~> 3.0.0"
     }
-
-    # azprivatedns = {
-    #   version = "~> 0.2.5"
-    #   source  = "github.com/jamesrcounts/azprivatedns"
-    # }
   }
 }
 

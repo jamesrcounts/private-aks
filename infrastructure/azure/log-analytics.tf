@@ -1,9 +1,4 @@
-resource "azurerm_log_analytics_workspace" "insights" {
-  name                = "la-${local.project}-${random_pet.fido.id}"
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
-  sku                 = "PerGB2018"
-  retention_in_days   = 30
-  tags                = local.tags
+data "azurerm_log_analytics_workspace" "main" {
+  name                = "la-${local.backend_instance_id}"
+  resource_group_name = "rg-backend-${local.backend_instance_id}"
 }
-

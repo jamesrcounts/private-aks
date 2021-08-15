@@ -1,7 +1,7 @@
 # move to governance
 resource "azuread_group" "aks_administrators" {
-  name        = "${local.aks_cluster_name}-administrators"
-  description = "Kubernetes administrators for the ${local.aks_cluster_name} cluster."
+  name        = "aks-${local.env_instance_id}-administrators"
+  description = "Kubernetes administrators for the ${local.env_instance_id} cluster."
 }
 
 resource "azuread_group_member" "aks_administrator" {
