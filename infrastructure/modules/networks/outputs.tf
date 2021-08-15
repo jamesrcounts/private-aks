@@ -1,5 +1,10 @@
+output "public_ip_prefix_id" {
+  description = "Public IP address prefix resource ID."
+  value       = azurerm_public_ip_prefix.hub.id
+}
+
 output "subnets" {
-  description = "Describes the subnets created by this module"
+  description = "Describes the subnets created by this module."
   value = {
     agents = {
       id = azurerm_subnet.agents.id
