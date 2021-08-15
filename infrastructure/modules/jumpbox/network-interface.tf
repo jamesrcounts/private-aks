@@ -21,14 +21,6 @@ resource "azurerm_public_ip" "publicip" {
   resource_group_name = var.resource_group.name
   allocation_method   = "Static"
   tags                = var.resource_group.tags
-  public_ip_prefix_id = azurerm_public_ip_prefix.pib.id
+  public_ip_prefix_id = var.public_ip_prefix_id
   sku                 = "Standard"
-}
-
-resource "azurerm_public_ip_prefix" "pib" {
-  name                = "pib-${local.instance_id}"
-  location            = var.resource_group.location
-  resource_group_name = var.resource_group.name
-  prefix_length       = 31
-  tags                = var.resource_group.tags
 }
