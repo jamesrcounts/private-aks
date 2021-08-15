@@ -29,33 +29,33 @@ resource "azurerm_network_security_rule" "allow_ssh_in" {
   network_security_group_name = azurerm_network_security_group.nsg.name
 }
 
-resource "azurerm_network_security_rule" "default_deny_in" {
-  name                        = "deny-inbound"
-  priority                    = 4096
-  direction                   = "Inbound"
-  access                      = "Deny"
-  protocol                    = "*"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = var.resource_group.name
-  network_security_group_name = azurerm_network_security_group.nsg.name
-}
+// resource "azurerm_network_security_rule" "default_deny_in" {
+//   name                        = "deny-inbound"
+//   priority                    = 4096
+//   direction                   = "Inbound"
+//   access                      = "Deny"
+//   protocol                    = "*"
+//   source_port_range           = "*"
+//   destination_port_range      = "*"
+//   source_address_prefix       = "*"
+//   destination_address_prefix  = "*"
+//   resource_group_name         = var.resource_group.name
+//   network_security_group_name = azurerm_network_security_group.nsg.name
+// }
 
-resource "azurerm_network_security_rule" "default_deny_out" {
-  name                        = "deny-outbound"
-  priority                    = 4096
-  direction                   = "Outbound"
-  access                      = "Deny"
-  protocol                    = "*"
-  source_port_range           = "*"
-  destination_port_range      = "*"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = var.resource_group.name
-  network_security_group_name = azurerm_network_security_group.nsg.name
-}
+// resource "azurerm_network_security_rule" "default_deny_out" {
+//   name                        = "deny-outbound"
+//   priority                    = 4096
+//   direction                   = "Outbound"
+//   access                      = "Deny"
+//   protocol                    = "*"
+//   source_port_range           = "*"
+//   destination_port_range      = "*"
+//   source_address_prefix       = "*"
+//   destination_address_prefix  = "*"
+//   resource_group_name         = var.resource_group.name
+//   network_security_group_name = azurerm_network_security_group.nsg.name
+// }
 
 resource "azurerm_subnet_network_security_group_association" "nsg_to_subnet" {
   subnet_id                 = azurerm_subnet.jumpboxes.id
