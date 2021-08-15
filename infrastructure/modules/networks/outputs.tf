@@ -9,6 +9,10 @@ output "subnets" {
     agents = {
       id = azurerm_subnet.agents.id
     }
+    jumpbox = {
+      id               = azurerm_subnet.jumpboxes.id
+      address_prefixes = azurerm_subnet.jumpboxes.address_prefixes
+    }
     firewall = {
       id = azurerm_subnet.firewall.id
     }
