@@ -1,9 +1,11 @@
 module "firewall" {
   source = "github.com/jamesrcounts/private-aks.git//infrastructure/modules/firewall?ref=lz"
 
-  firewall_policy_id = module.firewall_policy.firewall_policy_id
-  resource_group     = data.azurerm_resource_group.net
-  subnet_id          = module.networks.subnets["firewall"].id
+  firewall_policy_id  = module.firewall_policy.firewall_policy_id
+  public_ip_prefix_id = module.networks.public_ip_prefix_id
+  resource_group      = data.azurerm_resource_group.net
+  subnet_id           = module.networks.subnets["firewall"].id
+
   log_analytics_workspace = merge(
     data.azurerm_log_analytics_workspace.main,
     {
