@@ -27,8 +27,3 @@ resource "azurerm_subnet_route_table_association" "aks" {
   route_table_id = azurerm_route_table.aks.id
   subnet_id      = module.networks.subnets["agents"].id
 }
-
-resource "azurerm_subnet_route_table_association" "jumpbox" {
-  route_table_id = azurerm_route_table.aks.id
-  subnet_id      = module.networks.subnets["jumpbox"].id
-}
