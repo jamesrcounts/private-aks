@@ -15,12 +15,4 @@ resource "azurerm_subnet" "firewall" {
   virtual_network_name = azurerm_virtual_network.hub.name
 }
 
-# az network vnet subnet create -g $VNET_GROUP --vnet-name $HUB_VNET_NAME -n $HUB_JUMP_SUBNET_NAME --address-prefix 10.0.1.0/24
-resource "azurerm_subnet" "jumpboxes" {
-  address_prefixes     = ["10.0.1.0/24"]
-  name                 = "jumpbox-subnet"
-  resource_group_name  = var.resource_group.name
-  virtual_network_name = azurerm_virtual_network.hub.name
-}
-
 
