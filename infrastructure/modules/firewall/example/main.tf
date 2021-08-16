@@ -4,6 +4,7 @@ module "firewall" {
   firewall_policy_id  = azurerm_firewall_policy.example.id
   public_ip_prefix_id = azurerm_public_ip_prefix.pib.id
   resource_group      = data.azurerm_resource_group.net
+  route_table         = azurerm_route_table.aks_agents
   subnet_id           = azurerm_subnet.example.id
 
   log_analytics_workspace = merge(
@@ -54,6 +55,18 @@ resource "azurerm_public_ip_prefix" "pib" {
   resource_group_name = data.azurerm_resource_group.net.name
   prefix_length       = 31
   tags                = data.azurerm_resource_group.net.tags
+}
+
+resource "azurerm_route_table" "aks_agents" {
+  location            = data.azurerm_resource_group.net.location
+  name                = "rt-agents-${var.instance_id}"
+  resource_group_name = data.azurerm_resource_group.net.name
+  tags                = data.azurerm_resource_group.net.tags
+
+  lifecycle {
+    # AKS will assume control of the tags
+    ignore_changes = [tags]
+  }
 }
 
 provider "azurerm" {

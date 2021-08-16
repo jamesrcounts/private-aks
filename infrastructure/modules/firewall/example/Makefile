@@ -4,6 +4,8 @@ instance_id := moral-hound
 
 init:
 	terraform init -upgrade
+	terraform -v 
+	terraform providers
 
 plan: fmt config init
 	terraform plan -out plan.tfplan 

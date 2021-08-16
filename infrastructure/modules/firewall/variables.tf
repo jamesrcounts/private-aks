@@ -28,6 +28,14 @@ variable "resource_group" {
   })
 }
 
+variable "route_table" {
+  description = "(Required) This module will configure the route table with a route to send Internet traffic through the firewall."
+  type = object({
+    name                = string
+    resource_group_name = string
+  })
+}
+
 variable "subnet_id" {
   description = "(Required) The subnet id for the subnet dedicated to the Azure Firewall instance."
   type        = string
