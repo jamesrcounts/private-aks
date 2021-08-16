@@ -48,6 +48,23 @@ resource "azurerm_firewall_policy_rule_collection_group" "rules" {
         "dc.services.visualstudio.com"
       ]
     }
+
+    rule {
+      name = "dockerhub"
+      protocols {
+        type = "Http"
+        port = 80
+      }
+      protocols {
+        type = "Https"
+        port = 443
+      }
+      source_addresses = ["*"]
+      destination_fqdns = [
+        "auth.docker.io",
+        "registry-1.docker.io"
+      ]
+    }
   }
 
   # az network firewall application-rule create  \
