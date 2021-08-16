@@ -1,12 +1,17 @@
 default: all
 
 backend_instance_id := relaxed-cockatoo
+state_prefix := networking
 
 backend_config:
 	az keyvault secret download \
 		--name azurerm-backend-tfvars \
 		--vault-name kv-$(backend_instance_id) \
 		--file azurerm.backend.tfvars
+
+	sed -i \
+		's/private-aks.tfstate/$(state_prefix).tfstate/' \
+		azurerm.backend.tfvars
 
 aad_script:
 	az keyvault secret download \
