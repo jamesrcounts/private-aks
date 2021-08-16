@@ -5,3 +5,7 @@ output "instance_id" {
     spoke   = nonsensitive(data.azurerm_key_vault_secret.values["spoke-instance-id"].value)
   }
 }
+
+output "log_analytics_workspace" {
+  value = data.azurerm_log_analytics_workspace.main
+}
