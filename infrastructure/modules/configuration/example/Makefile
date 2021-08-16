@@ -4,6 +4,8 @@ backend_instance_id := relaxed-cockatoo
 
 init:
 	terraform init
+	terraform -v 
+	terraform providers
 
 plan: fmt config init
 	terraform plan -out plan.tfplan
