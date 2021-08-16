@@ -62,7 +62,8 @@ resource "azurerm_firewall_policy_rule_collection_group" "rules" {
       source_addresses = ["*"]
       destination_fqdns = [
         "auth.docker.io",
-        "registry-1.docker.io"
+        "registry-1.docker.io",
+        "production.cloudflare.docker.com"
       ]
     }
   }
