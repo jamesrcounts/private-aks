@@ -2,14 +2,14 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "workbookDisplayName": {
-      "type": "string",
+      "type": "String",
       "defaultValue": "Azure Firewall Workbook",
       "metadata": {
         "description": "The friendly name for the workbook that is used in the Gallery or Saved List.  This name must be unique within a resource group."
       }
     },
     "workbookType": {
-      "type": "string",
+      "type": "String",
       "allowedValues": [
         "workbook",
         "sentinel"
@@ -21,28 +21,28 @@
       }
     },
     "DiagnosticsWorkspaceName": {
-      "type": "string",
+      "type": "String",
       "defaultValue": "${workspace_name}",
       "metadata": {
         "description": "Provide the workspace name for your Network Diagnostic logs"
       }
     },
     "DiagnosticsWorkspaceSubscription": {
-      "type": "string",
+      "type": "String",
       "defaultValue": "${workspace_subscription_id}",
       "metadata": {
         "description": "Provide the workspace subscription GUID for your Network Diagnostic logs"
       }
     },
     "DiagnosticsWorkspaceResourceGroup": {
-      "type": "string",
+      "type": "String",
       "defaultValue": "${workspace_resource_group_name}",
       "metadata": {
         "description": "Provide the workspace resourcegroupname for your Network Diagnostic logs"
       }
     },
     "workbookId": {
-      "type": "string",
+      "type": "String",
       "defaultValue": "[newGuid()]",
       "metadata": {
         "description": "The unique guid for this workbook instance"
