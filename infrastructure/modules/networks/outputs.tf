@@ -27,3 +27,8 @@ output "networks" {
     }
   }
 }
+
+output "route_table" {
+  description = "The AKS agents subnet route table."
+  value       = azurerm_route_table.aks_agents
+}
