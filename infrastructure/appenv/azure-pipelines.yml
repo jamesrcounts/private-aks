@@ -33,7 +33,7 @@ variables:
   - group: terraform-backend
   - group: terraform-version
   - name: project_folder
-    value: infrastructure/azure
+    value: infrastructure/appenv
 
 stages:
   - stage: plan
