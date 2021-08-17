@@ -1,5 +1,5 @@
 data "azurerm_resource_group" "main" {
-  name = "rg-${module.configuration.instance_id["spoke"]}"
+  name = "rg-${local.env_instance_id}"
 }
 
 data "azurerm_resource_group" "net" {
