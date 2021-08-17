@@ -1,3 +1,7 @@
+output "imports" {
+  value = { for k, v in data.azurerm_key_vault_secret.values : k => v.value }
+}
+
 output "instance_id" {
   value = {
     backend = data.azurerm_resource_group.backend.tags["instance_id"]

@@ -1,6 +1,6 @@
 default: plan
 
-backend_instance_id := relaxed-cockatoo
+instance_id := relaxed-cockatoo
 
 init:
 	terraform init
@@ -17,4 +17,5 @@ fmt:
 	cd .. && terraform fmt -recursive
 
 config:
-	@echo 'backend_resource_group_name="rg-backend-$(backend_instance_id)"' > terraform.auto.tfvars
+	@echo 'backend_resource_group_name="rg-backend-$(instance_id)"' > terraform.auto.tfvars
+	@echo 'instance_id="$(instance_id)"' >> terraform.auto.tfvars
