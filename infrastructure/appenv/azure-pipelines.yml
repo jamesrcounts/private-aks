@@ -42,6 +42,9 @@ stages:
     jobs:
       - job: plan
         displayName: 'Infrastructure Plan'
+        variables:
+          - name: TF_STORAGE_BLOB_NAME
+            value: 'appenv.tfstate'
         steps:
           - checkout: self
             fetchDepth: 1
