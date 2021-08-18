@@ -4,9 +4,9 @@ output "imports" {
 
 output "instance_id" {
   value = {
-    backend = data.azurerm_resource_group.backend.tags["instance_id"]
-    hub     = nonsensitive(data.azurerm_key_vault_secret.values["hub-instance-id"].value)
-    spoke   = nonsensitive(data.azurerm_key_vault_secret.values["spoke-instance-id"].value)
+    backend    = data.azurerm_resource_group.backend.tags["instance_id"]
+    networking = nonsensitive(data.azurerm_key_vault_secret.values["networking-instance-id"].value)
+    appenv     = nonsensitive(data.azurerm_key_vault_secret.values["appenv-instance-id"].value)
   }
 }
 
