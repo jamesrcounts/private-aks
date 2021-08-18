@@ -2,7 +2,7 @@ data "azurerm_key_vault_secret" "values" {
   for_each = toset(
     distinct(
       concat(
-        ["hub-instance-id", "spoke-instance-id"],
+        ["networking-instance-id", "appenv-instance-id"],
         var.additional_imports
       )
     )
