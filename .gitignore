@@ -29,3 +29,8 @@ override.tf.json
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
 **/.DS_Store
+infrastructure/**/azurerm.backend.tfvars
+**/*.tfplan
+**/terraform.auto.tfvars
+infrastructure/azure/Add-AzureAdRoles.ps1
+infrastructure/azure/add-azuread-roles.sh

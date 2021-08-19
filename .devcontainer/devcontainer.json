@@ -5,7 +5,7 @@
 		"args": { 
 			// Update the VARIANT arg to pick a version of Go: 1, 1.15, 1.14
 			"GO_VARIANT": "1.13",	
-			"TERRAFORM_VERSION": "0.14.4",
+			"TERRAFORM_VERSION": "1.0.4",
 			"TFLINT_VERSION": "0.18.0",
 			"INSTALL_AZURE_CLI": "true",
 			"INSTALL_DOCKER": "true",
@@ -17,8 +17,8 @@
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 
-		"terminal.integrated.shell.linux": "/bin/bash",
-		"go.useGoProxyToCheckForToolUpdates": false,
+		"terminal.integrated.defaultProfile.linux": "zsh",
+		"go.toolsManagement.checkForUpdates": "off",
 		"go.useLanguageServer": true,
 		"go.gopath": "~/workspace/private-aks/go",
 		"go.goroot": "/usr/local/go",
@@ -28,12 +28,15 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"editorconfig.editorconfig",
+		"golang.Go",
 		"hashicorp.terraform",
+		"mhutchie.git-graph",
 		"ms-azuretools.vscode-azureterraform",
 		"ms-azuretools.vscode-docker",
 		"ms-vscode.azurecli",
+		"ms-vscode.powershell",
+		"msazurermtools.azurerm-vscode-tools",
 		"tyriar.sort-lines",
-		"golang.Go"
 	]
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
