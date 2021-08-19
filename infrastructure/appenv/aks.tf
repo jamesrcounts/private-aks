@@ -1,5 +1,5 @@
 module "aks_cluster" {
-  source = "github.com/jamesrcounts/private-aks.git//infrastructure/modules/aks-private-cluster?ref=lz"
+  source = "github.com/jamesrcounts/private-aks.git//infrastructure/modules/aks-private-cluster?ref=2021.08"
 
   admin_group_object_id      = module.configuration.imports["admin-group-object-id"]
   log_analytics_workspace_id = module.configuration.log_analytics_workspace.id

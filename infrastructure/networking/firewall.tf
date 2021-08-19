@@ -1,5 +1,5 @@
 module "firewall" {
-  source = "github.com/jamesrcounts/private-aks.git//infrastructure/modules/firewall?ref=lz"
+  source = "github.com/jamesrcounts/private-aks.git//infrastructure/modules/firewall?ref=2021.08"
 
   firewall_policy_id  = module.firewall_policy.firewall_policy_id
   public_ip_prefix_id = module.networks.public_ip_prefix_id
@@ -16,7 +16,7 @@ module "firewall" {
 }
 
 module "firewall_policy" {
-  source = "github.com/jamesrcounts/private-aks.git//infrastructure/modules/firewall-policy-aks?ref=lz"
+  source = "github.com/jamesrcounts/private-aks.git//infrastructure/modules/firewall-policy-aks?ref=2021.08"
 
   resource_group = data.azurerm_resource_group.net
 }
