@@ -13,7 +13,6 @@ trigger:
   branches:
     include:
       - main
-      - lz
   paths:
     include:
       - infrastructure/appenv
