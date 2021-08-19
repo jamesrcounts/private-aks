@@ -1,5 +1,5 @@
 locals {
-  env_instance_id = module.configuration.instance_id["spoke"]
+  env_instance_id = module.configuration.instance_id["appenv"]
   subnets         = jsondecode(module.configuration.imports["subnets"])
 }
 
